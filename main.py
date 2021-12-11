@@ -5,6 +5,7 @@ from threading import Thread
 from stockfish import Stockfish
 from flask_cors import CORS, cross_origin
 import random
+import time
 
 stockfish = Stockfish("stockfish_14/stockfish_14.1_linux_x64")
 
@@ -20,7 +21,7 @@ def get_move_from_brain(fen, brain):
   
   if brain == "stockfish":
     stockfish.set_fen_position(fen)
-    square = str(stockfish.get_best_move_time(1000))[0:2]
+    square = str(stockfish.get_best_move_time(2000))[0:2]
     return chess.piece_name(board.piece_type_at(chess.parse_square(square)))
   if brain == "random":
     piece_types = []
@@ -29,6 +30,7 @@ def get_move_from_brain(fen, brain):
       if piece_type not in piece_types:
         piece_types.append(piece_type)
     
+    time.sleep(2)
     return random.choice(piece_types)
   
 
